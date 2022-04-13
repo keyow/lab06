@@ -34,5 +34,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: solver_application/solver_output/solver-0.1.1-Linux.deb
-          asset_name: solver.rpm
+          asset_name: solver.deb
           asset_content_type: application/deb
