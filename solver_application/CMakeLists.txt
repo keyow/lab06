@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 3.4)
-project(equation)
+cmake_minimum_required(VERSION 3.12)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,37 +8,34 @@ option(CPACK_GENERATOR_RPM OFF)
 option(CPACK_GENERATOR_MSI OFF)
 option(CPACK_GENERATOR_DMG OFF)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../formatter_ex_lib
-        ${CMAKE_CURRENT_BINARY_DIR}/formatter_ex)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../solver_lib
-        ${CMAKE_CURRENT_BINARY_DIR}/solver)
-add_executable(equation ${CMAKE_CURRENT_SOURCE_DIR}/equation.cpp)
-target_link_libraries(equation formatter_ex solver)
+project(solver)
 
+add_executable(solver equation.cpp)
 
-install(TARGETS equation RUNTIME DESTINATION bin)
+include_directories(../formatter_ex_lib ../solver_lib)
+
+add_subdirectory(../formatter_ex_lib formatter_ex)
+add_subdirectory(../solver_lib solver_lib)
+
+target_link_libraries(solver formatter_ex solver_lib)
+
+install(TARGETS solver RUNTIME DESTINATION bin)
 set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
 if(CPACK_GENERATOR_RPM)
     set(CPACK_GENERATOR "RPM")
 endif()
-
 if(CPACK_GENERATOR_DEB)
-    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "keyow")
-    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.3.1-6), libc6 (< 2.4)")
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "roflanpotsan")
     set(CPACK_GENERATOR "DEB")
 endif()
-
 if(CPACK_GENERATOR_MSI)
-    set(CPACK_GENERATOR "MSI")
+    set(CPACK_GENERATOR "WIX")
 endif()
-
 if(CPACK_GENERATOR_DMG)
     set(MACOSX_BUNDLE TRUE)
     set(CPACK_GENERATOR "DragNDrop")
 endif()
-
 include(CPack)
-
 unset(CPACK_GENERATOR_RPM CACHE)
 unset(CPACK_GENERATOR_DEB CACHE)
 unset(CPACK_GENERATOR_MSI CACHE)

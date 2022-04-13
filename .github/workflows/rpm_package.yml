@@ -1,10 +1,10 @@
-name: rpm
+name: lab06
 on:
   push:
     tags:
-      - "*rpm_v*"
+      - "rpm_v*"
 jobs:
-  rpm_release:
+  build_and_release:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -12,15 +12,13 @@ jobs:
       - name: build_package
         run: |
           cd solver_application
-          cmake -DCPACK_GENERETOR_RPM=ON -B ./build
-          cd build
+          cmake -DCPACK_GENERATOR_RPM=ON -B ./solver_output
+          cd solver_output
           make package
           make package_source
-          ls
-          pwd
-      - name: create release
+      - name: Create Release
         id: create_release
-        uses: actions/create-release@master
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -30,11 +28,11 @@ jobs:
           prerelease: false
       - name: Upload Release Asset
         id: upload-release-asset
-        uses: actions/upload-release-asset@master
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: solver_application/build/equation-0.1.1-Linux.rpm
-          asset_name: equation-0.1.1-Linux.rpm
+          asset_path: solver_application/solver_output/solver-0.1.1-Linux.rpm
+          asset_name: solver.rpm
           asset_content_type: application/rpm
