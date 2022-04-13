@@ -40,36 +40,3 @@ jobs:
             cd build
             make package
             make package_source
-
-        - name: Create release
-          id: create_release
-          uses: actions/create-release@v1
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            tag_name: ${{ github.ref }}
-            release_name: Release ${{ github.ref }}
-            draft: false
-            prerelease: false
-
-        - name: Upload DEB Release Asset
-          id: upload-release-asset-deb
-          uses: actions/upload-release-asset@v1
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: solver_application/build/equation-0.1.1-Linux.deb
-            asset_name: equation-0.1.1-Linux.deb
-            asset_content_type: application/zip
-
-        - name: Upload RPM Release Asset
-          id: upload-release-asset-rpm
-          uses: actions/upload-release-asset@v1
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: solver_application/build/equation-0.1.1-Linux.rpm
-            asset_name: equation-0.1.1-Linux.rpm
-            asset_content_type: application/zip
