@@ -32,7 +32,7 @@ jobs:
             cmake -B ./build
             cd build
             make
-            ./equation
+            ./solver
         - name: packaging solver_application
           shell: bash
           working-directory: solver_application
