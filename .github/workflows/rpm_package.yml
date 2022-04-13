@@ -2,7 +2,7 @@ name: rpm
 on:
   push:
     tags:
-      - "*rpm*"
+      - "*rpm_v*"
 jobs:
   rpm_release:
     runs-on: ubuntu-latest
