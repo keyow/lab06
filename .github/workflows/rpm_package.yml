@@ -16,6 +16,8 @@ jobs:
           cd build
           make package
           make package_source
+          ls
+          pwd
       - name: create release
         id: create_release
         uses: actions/create-release@master
